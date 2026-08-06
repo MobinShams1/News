@@ -4,12 +4,13 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
+  engineType = "library"
 }
 
-model User {
+model Users {
   id        String    @id @default(uuid())
   name      String
-  email     String    @unique
+  phone     String    @unique
   password  String
   role      String    @default("ADMIN") 
   createdAt DateTime  @default(now())
@@ -38,7 +39,7 @@ model Article {
   updatedAt   DateTime @updatedAt
 
   authorId   String
-  author     User     @relation(fields: [authorId], references: [id])
+  author     Users     @relation(fields: [authorId], references: [id])
 
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
