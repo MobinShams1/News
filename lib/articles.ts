@@ -100,3 +100,71 @@ export async function createArticle(formData: FormData) {
   }
 }
 
+
+
+export async function updateArticle(articleId: string, formData: FormData) {
+  const title = formData.get("title") as string;
+  const categoryId = formData.get("categoryId") as string;
+  const summary = formData.get("summary") as string;
+  const content = formData.get("content") as string;
+  const isBreaking = formData.get("isBreaking") === "true";
+  const imageFile = formData.get("imageFile") as File | null;
+
+  if (!title || !categoryId || !content) {
+    return { error: "لطفاً تمامی فیلدهای ضروری را پر کنید." };
+  }
+
+  const currentArticle = await prisma.article.findUnique({
+    where: { id: articleId },
+    select: { coverImage: true },
+  });
+
+  if (!currentArticle) {
+    return { error: "خبر مورد نظر یافت نشد." };
+  }
+
+  let coverImage = currentArticle.coverImage;
+
+  if (imageFile && imageFile.size > 0 && imageFile.name !== "undefined") {
+    try {
+      const bytes = await imageFile.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+
+      const fileExt = path.extname(imageFile.name).toLowerCase() || ".jpg";
+      const fileName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${fileExt}`;
+      const uploadDir = path.join(process.cwd(), "public/uploads");
+
+      await mkdir(uploadDir, { recursive: true });
+      const filePath = path.join(uploadDir, fileName);
+      await writeFile(filePath, buffer);
+
+      coverImage = `/uploads/${fileName}`;
+    } catch (error) {
+      console.error("Error saving image:", error);
+      return { error: "خطا در ذخیره‌سازی تصویر جدید." };
+    }
+  }
+
+  try {
+    await prisma.article.update({
+      where: { id: articleId },
+      data: {
+        title,
+        summary: summary ? summary.trim() : content.slice(0, 100),
+        content,
+        coverImage,
+        isBreaking,
+        category: {
+          connect: { id: categoryId },
+        },
+      },
+    });
+
+    revalidatePath("/admin/articles");
+    revalidatePath("/admin/dashboard");
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating article:", error);
+    return { error: "خطا در ویرایش خبر در دیتابیس." };
+  }
+}

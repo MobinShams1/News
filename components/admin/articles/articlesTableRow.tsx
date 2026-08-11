@@ -1,5 +1,6 @@
 import Link from "next/link";
 import DeleteArticleBtn from "@/components/admin/articles/deleteArticleBtn";
+import Image from "next/image";
 
 interface ArticleItem {
   id: string;
@@ -16,12 +17,15 @@ export default function ArticleTableRow({ article }: { article: ArticleItem }) {
   return (
     <tr className="hover:bg-slate-800/40 transition-colors">
       <td className="p-4">
-        <div className="w-12 h-12 bg-slate-800 border border-slate-700 rounded-lg overflow-hidden flex items-center justify-center text-xs text-slate-500 shrink-0">
+        <div className="relative w-12 h-12 bg-slate-800 border border-slate-700 rounded-lg overflow-hidden flex items-center justify-center text-xs text-slate-500 shrink-0">
           {article.coverImage ? (
-            <img
+            <Image
               src={article.coverImage}
-              alt={article.title}
-              className="w-full h-full object-cover"
+              alt={article.title || "تصویر خبر"}
+              fill
+              sizes="48px"
+              className="object-cover"
+              priority={false}
             />
           ) : (
             "🖼️"
