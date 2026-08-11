@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { writeFile, mkdir } from "fs/promises";
 import { cookies } from "next/headers";
 import path from "path";
+import { getAuthAdmin } from "./auth";
 
 function generateSlug(text: string): string {
   return (
@@ -12,7 +13,8 @@ function generateSlug(text: string): string {
       .trim()
       .toLowerCase()
       .replace(/\s+/g, "-")
-      .replace(/[^\w\u0600-\u06FF\-]/g, "") + `-${Date.now().toString().slice(-4)}`
+      .replace(/[^\w\u0600-\u06FF\-]/g, "") +
+    `-${Date.now().toString().slice(-4)}`
   );
 }
 
@@ -31,8 +33,12 @@ export async function deleteArticle(articleId: string) {
 }
 
 export async function createArticle(formData: FormData) {
-  const cookieStore = await cookies();
-  const authorId = cookieStore.get("admin_token")?.value;
+  const currentAdmin = await getAuthAdmin();
+  if (!currentAdmin) {
+    return { error: "نشست شما منقضی شده است. لطفاً دوباره لاگین کنید." };
+  }
+
+  const authorId = currentAdmin.userId;
 
   if (!authorId) {
     return { error: "شما برای ثبت خبر باید وارد حساب کاربری خود شوید." };
@@ -99,8 +105,6 @@ export async function createArticle(formData: FormData) {
     return { error: "خطا در ثبت خبر در دیتابیس." };
   }
 }
-
-
 
 export async function updateArticle(articleId: string, formData: FormData) {
   const title = formData.get("title") as string;
