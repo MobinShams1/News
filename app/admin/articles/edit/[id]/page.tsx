@@ -2,11 +2,30 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import EditArticleHeader from "@/components/admin/articles/editArticleHeader";
 import EditArticleForm from "@/components/admin/articles/editArticlesForm";
-
+import { Metadata } from "next";
 interface EditArticlePageProps {
   params: Promise<{
     id: string;
   }>;
+}
+
+export async function generateMetadata({ params }: EditArticlePageProps): Promise<Metadata> {
+  const { id } = await params;
+  
+  const article = await prisma.article.findUnique({
+    where: { id },
+    select: { title: true },
+  });
+
+  if (!article) {
+    return {
+      title: "خبر یافت نشد",
+    };
+  }
+
+  return {
+    title: `ویرایش خبر: ${article.title}`,
+  };
 }
 
 export default async function EditArticlePage({ params }: EditArticlePageProps) {

@@ -2,6 +2,13 @@ import { prisma } from "@/lib/prisma";
 import ArticlesHeader from "@/components/admin/articles/articlesHeader";
 import ArticlesTable from "@/components/admin/articles/articleTable";
 export const dynamic = "force-dynamic";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "مدیریت اخبار",
+};
+
+
 export default async function ArticlesPage() {
   const articles = await prisma.article.findMany({
     orderBy: { createdAt: "desc" },

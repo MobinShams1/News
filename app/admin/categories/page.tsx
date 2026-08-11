@@ -2,8 +2,13 @@ import { getCategories } from "@/lib/categories";
 import CategoriesHeader from "@/components/admin/categories/categoriesHeader";
 import CreateCategoryForm from "@/components/admin/categories/createCategoryForm";
 import CategoriesTable from "@/components/admin/categories/categoriesTable";
-
+import type { Metadata } from "next";
 export const dynamic = "force-dynamic";
+
+
+export const metadata: Metadata = {
+  title: "مدیریت دسته‌بندی‌ها",
+};
 
 export default async function CategoriesPage() {
   const categories = await getCategories();
