@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { prisma } from "@/lib/prisma";
 import NewsHeader from "@/components/news/newsHeader";
 import NewsGrid from "@/components/news/newsGrid";
 import HeroNewsSlider from "@/components/news/heroNewsSlider";
+import { getNewsFeedData } from "@/lib/articles";
 
 export const metadata: Metadata = {
   title: "آخرین اخبار و مقالات | خبرگزاری",
@@ -20,27 +20,7 @@ interface NewsPageProps {
 export default async function NewsPage({ searchParams }: NewsPageProps) {
   const { category } = await searchParams;
 
-  const [articles, categories] = await Promise.all([
-    prisma.article.findMany({
-      where: category
-        ? {
-            category: {
-              slug: category,
-            },
-          }
-        : {},
-      orderBy: { createdAt: "desc" },
-      include: {
-        category: {
-          select: { name: true, slug: true },
-        },
-      },
-    }),
-    prisma.category.findMany({
-      orderBy: { name: "asc" },
-      select: { id: true, name: true, slug: true },
-    }),
-  ]);
+  const {articles , categories} = await getNewsFeedData(category);
 
   return (
     <main className="max-w-6xl mx-auto px-4 py-8 space-y-10 dir-rtl">

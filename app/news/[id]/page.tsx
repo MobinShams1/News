@@ -1,21 +1,25 @@
 import type { Metadata } from "next";
-import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import NewsDetailHeader from "@/components/news/newsDetailHeader";
 import NewsDetailContent from "@/components/news/newsDetailContent";
 import RelatedArticles from "@/components/news/relatedArticles";
+
+import {
+  getArticleAndIncrementViews,
+  getArticleSummaryById,
+  getRelatedArticles,
+} from "@/lib/articles";
 export const dynamic = "force-dynamic";
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { id } = await params;
 
-  const article = await prisma.article.findUnique({
-    where: { id },
-    select: { title: true, summary: true, coverImage: true },
-  });
+  const article = await getArticleSummaryById(id);
 
   if (!article) {
     return { title: "خبر یافت نشد" };
@@ -35,38 +39,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function NewsDetailPage({ params }: PageProps) {
   const { id } = await params;
 
-  const article = await prisma.article.update({
-    where: { id },
-    data: {
-      viewsCount: { increment: 1 },
-    },
-    include: {
-      category: {
-        select: { id: true, name: true, slug: true },
-      },
-    },
-  }).catch(() => null);
+  const article = await getArticleAndIncrementViews(id);
 
   if (!article) {
     notFound();
   }
 
-  const relatedArticles = article.categoryId
-    ? await prisma.article.findMany({
-        where: {
-          categoryId: article.categoryId,
-          NOT: { id: article.id },
-        },
-        orderBy: { createdAt: "desc" },
-        take: 3,
-        select: {
-          id: true,
-          title: true,
-          coverImage: true,
-          createdAt: true,
-        },
-      })
-    : [];
+  const relatedArticles = await getRelatedArticles(
+    article.categoryId,
+    article.id,
+  );
 
   return (
     <main className="max-w-4xl mx-auto px-4 py-8 space-y-10 dir-rtl">

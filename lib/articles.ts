@@ -172,3 +172,72 @@ export async function updateArticle(articleId: string, formData: FormData) {
     return { error: "خطا در ویرایش خبر در دیتابیس." };
   }
 }
+
+export async function getNewsFeedData(categorySlug?: string) {
+  const [articles, categories] = await Promise.all([
+    prisma.article.findMany({
+      where: categorySlug ? { category: { slug: categorySlug } } : {},
+      orderBy: { createdAt: "desc" },
+      include: {
+        category: {
+          select: { name: true, slug: true },
+        },
+      },
+    }),
+    prisma.category.findMany({
+      orderBy: { name: "asc" },
+      select: { id: true, name: true, slug: true },
+    }),
+  ]);
+
+  return { articles, categories };
+}
+
+export async function getArticleSummaryById(id: string) {
+  return await prisma.article.findUnique({
+    where: { id },
+    select: {
+      title: true,
+      summary: true,
+      coverImage: true,
+    },
+  });
+}
+
+export async function getArticleAndIncrementViews(id: string) {
+  return await prisma.article
+    .update({
+      where: { id },
+      data: {
+        viewsCount: { increment: 1 },
+      },
+      include: {
+        category: {
+          select: { id: true, name: true, slug: true },
+        },
+      },
+    })
+    .catch(() => null);
+}
+
+export async function getRelatedArticles(
+  categoryId: string | null | undefined,
+  currentArticleId: string,
+) {
+  if (!categoryId) return [];
+
+  return await prisma.article.findMany({
+    where: {
+      categoryId: categoryId,
+      NOT: { id: currentArticleId },
+    },
+    orderBy: { createdAt: "desc" },
+
+    select: {
+      id: true,
+      title: true,
+      coverImage: true,
+      createdAt: true,
+    },
+  });
+}
