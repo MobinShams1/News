@@ -1,14 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Article } from "@/types/article";
 
-interface ArticleItem {
-  id: string;
-  title: string;
-  coverImage: string | null;
-  createdAt: Date;
-}
-
-export default function RelatedArticles({ articles }: { articles: ArticleItem[] }) {
+export default function RelatedArticles({ articles }: { articles: Article[] }) {
   if (!articles || articles.length === 0) return null;
 
   return (

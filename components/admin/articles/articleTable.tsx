@@ -1,17 +1,7 @@
 import ArticleTableRow from "./articlesTableRow";
+import { Article } from "@/types/article";
 
-interface ArticleItem {
-  id: string;
-  title: string;
-  coverImage: string | null;
-  viewsCount: number;
-  createdAt: Date;
-  category?: {
-    name: string;
-  } | null;
-}
-
-export default function ArticlesTable({ articles }: { articles: ArticleItem[] }) {
+export default function ArticlesTable({ articles }: { articles: Article[] }) {
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
       <div className="overflow-x-auto">

@@ -2,21 +2,10 @@ import Link from "next/link";
 import Image from "next/image";
 import DateFormat from "@/utils/dateFormat";
 import ViewsCountFormatted from "@/utils/viewsCountFormat";
+import { Article } from "@/types/article";
 
 interface NewsCardProps {
-  article: {
-    id: string;
-    title: string;
-    summary: string | null;
-    coverImage: string | null;
-    viewsCount: number;
-    createdAt: Date;
-    isBreaking: boolean;
-    category?: {
-      name: string;
-      slug: string;
-    } | null;
-  };
+  article: Article
 }
 
 export default function NewsCard({ article }: NewsCardProps) {

@@ -3,13 +3,10 @@
 import { useState } from "react";
 import AdminSidebar from "./adminSidebar";
 import AdminHeader from "./adminHeader";
+import { UserItem } from "@/types/user";
 
 interface AdminLayoutWrapperProps {
-  user: {
-    name?: string | null;
-    phone: string;
-    role: string;
-  } | null;
+  user: UserItem | null;
   children: React.ReactNode;
 }
 

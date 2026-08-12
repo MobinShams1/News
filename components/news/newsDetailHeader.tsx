@@ -2,25 +2,13 @@ import DateFormat from "@/utils/dateFormat";
 import ViewsCountFormatted from "@/utils/viewsCountFormat";
 import Image from "next/image";
 import Link from "next/link";
+import { Article } from "@/types/article";
 
-interface ArticleData {
-  id: string;
-  title: string;
-  summary: string | null;
-  coverImage: string | null;
-  viewsCount: number;
-  createdAt: Date;
-  isBreaking: boolean;
-  category?: {
-    name: string;
-    slug: string;
-  } | null;
-}
 
 export default function NewsDetailHeader({
   article,
 }: {
-  article: ArticleData;
+  article: Article;
 }) {
   return (
     <header className="space-y-6 dir-rtl">

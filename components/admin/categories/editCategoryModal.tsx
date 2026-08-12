@@ -3,14 +3,10 @@
 import { useState } from "react";
 import { updateCategory } from "@/lib/categories";
 import { toast } from "sonner";
+import { Category } from "@/types/category";
 
-interface CategoryData {
-  id: string;
-  name: string;
-  slug: string;
-}
 
-export default function EditCategoryModal({ category }: { category: CategoryData }) {
+export default function EditCategoryModal({ category }: { category: Category }) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 

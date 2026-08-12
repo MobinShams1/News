@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { SignJWT, jwtVerify } from "jose";
-
+import { UserItem } from "@/types/user";
 const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || "default_fallback_secret_key",
 );
@@ -70,7 +70,8 @@ export async function logoutAdmin() {
 }
 
 
-export async function getAuthAdmin() {
+
+export async function getAuthAdmin(): Promise<UserItem | null> {
   const cookieStore = await cookies();
   const token = cookieStore.get("admin_token")?.value;
 
@@ -78,13 +79,14 @@ export async function getAuthAdmin() {
 
   try {
     const { payload } = await jwtVerify(token, JWT_SECRET);
-    return payload as {
-      userId: string;
-      phone: string;
-      name: string | null;
-      role: string;
+
+    return {
+      id: (payload.userId as string) || (payload.id as string),
+      phone: payload.phone as string,
+      name: (payload.name as string | null) ?? null,
+      role: payload.role as string,
     };
   } catch {
-    return null; 
+    return null;
   }
 }

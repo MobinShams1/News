@@ -1,15 +1,6 @@
 import DateFormat from "@/utils/dateFormat";
 import DeleteUserBtn from "./deleteUserBtn";
-
-interface UserItem {
-  id: string;
-  name: string | null;
-  phone: string;
-  createdAt: Date;
-  _count: {
-    articles: number;
-  };
-}
+import { UserItem } from "@/types/user";
 
 export default function UsersTable({ users }: { users: UserItem[] }) {
   return (
@@ -46,11 +37,11 @@ export default function UsersTable({ users }: { users: UserItem[] }) {
                   </td>
                   <td className="p-4">
                     <span className="bg-teal-500/10 text-teal-400 px-3 py-1 rounded-lg text-xs border border-teal-500/20">
-                      {user._count.articles.toLocaleString("fa-IR")} خبر
+                      {(user._count?.articles ?? 0).toLocaleString("fa-IR")}خبر
                     </span>
                   </td>
                   <td className="p-4 text-xs text-slate-400">
-                    <DateFormat date={user.createdAt}/>
+                    <DateFormat date={user.createdAt ? new Date(user.createdAt) : new Date()} />
                   </td>
                   <td className="p-4 text-center">
                     <DeleteUserBtn

@@ -1,6 +1,6 @@
 import AdminLayoutWrapper from "@/components/admin/dashboard/adminLayoutWrapper";
 import { getAuthAdmin } from "@/lib/auth";
-
+import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -22,6 +22,10 @@ export const metadata: Metadata = {
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const currentadmin = await getAuthAdmin();
+
+  if (!currentadmin) {
+    redirect("/admin/login"); 
+  }
   
   return <AdminLayoutWrapper user={currentadmin}>{children}</AdminLayoutWrapper>;
 }

@@ -4,27 +4,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { updateArticle } from "@/lib/articles";
 import { toast } from "sonner";
-
-interface Category {
-  id: string;
-  name: string;
-}
-
-interface ArticleData {
-  id: string;
-  title: string;
-  summary: string | null;
-  content: string;
-  coverImage: string | null;
-  isBreaking: boolean;
-  categoryId: string;
-}
+import { Category } from "@/types/category";
+import { Article } from "@/types/article";
 
 export default function EditArticleForm({
   article,
   categories,
 }: {
-  article: ArticleData;
+  article: Article;
   categories: Category[];
 }) {
   const [loading, setLoading] = useState(false);
@@ -81,7 +68,7 @@ export default function EditArticleForm({
           </label>
           <select
             name="categoryId"
-            defaultValue={article.categoryId}
+            defaultValue={article.categoryId ?? ""}
             required
             className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-teal-500 transition-colors text-sm cursor-pointer"
           >

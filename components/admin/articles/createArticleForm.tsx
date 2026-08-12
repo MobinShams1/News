@@ -4,11 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createArticle } from "@/lib/articles";
 import { toast } from "sonner";
-
-interface Category {
-  id: string;
-  name: string;
-}
+import { Category } from "@/types/category";
 
 export default function CreateArticleForm({categories} : {categories : Category[]}) {
   const [loading, setLoading] = useState(false);

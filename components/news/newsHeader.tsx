@@ -1,10 +1,5 @@
 import Link from "next/link";
-
-interface Category {
-  id: string;
-  name: string;
-  slug: string;
-}
+import { Category } from "@/types/category";
 
 interface NewsHeaderProps {
   categories: Category[];

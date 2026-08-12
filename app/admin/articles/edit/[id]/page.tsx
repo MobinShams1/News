@@ -1,8 +1,9 @@
-import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import EditArticleHeader from "@/components/admin/articles/editArticleHeader";
 import EditArticleForm from "@/components/admin/articles/editArticlesForm";
 import { Metadata } from "next";
+import { getArticle, getArticleSummaryById } from "@/lib/articles";
+import { getCategories } from "@/lib/categories";
 export const dynamic = "force-dynamic";
 interface EditArticlePageProps {
   params: Promise<{
@@ -10,13 +11,12 @@ interface EditArticlePageProps {
   }>;
 }
 
-export async function generateMetadata({ params }: EditArticlePageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: EditArticlePageProps): Promise<Metadata> {
   const { id } = await params;
-  
-  const article = await prisma.article.findUnique({
-    where: { id },
-    select: { title: true },
-  });
+
+  const article = await getArticleSummaryById(id);
 
   if (!article) {
     return {
@@ -29,18 +29,13 @@ export async function generateMetadata({ params }: EditArticlePageProps): Promis
   };
 }
 
-export default async function EditArticlePage({ params }: EditArticlePageProps) {
+export default async function EditArticlePage({
+  params,
+}: EditArticlePageProps) {
   const { id } = await params;
 
-  const [article, categories] = await Promise.all([
-    prisma.article.findUnique({
-      where: { id },
-    }),
-    prisma.category.findMany({
-      orderBy: { name: "asc" },
-      select: { id: true, name: true },
-    }),
-  ]);
+  const article = await getArticle(id);
+  const categories = await getCategories();
 
   if (!article) {
     notFound();

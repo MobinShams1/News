@@ -1,20 +1,7 @@
 import NewsCard from "./newsCard";
+import { Article } from "@/types/article";
 
-interface ArticleItem {
-  id: string;
-  title: string;
-  summary: string | null;
-  coverImage: string | null;
-  viewsCount: number;
-  createdAt: Date;
-  isBreaking: boolean;
-  category?: {
-    name: string;
-    slug: string;
-  } | null;
-}
-
-export default function NewsGrid({ articles }: { articles: ArticleItem[] }) {
+export default function NewsGrid({ articles }: { articles: Article[] }) {
   if (articles.length === 0) {
     return (
       <div className="bg-slate-900 border border-slate-800 p-12 rounded-2xl text-center space-y-3">

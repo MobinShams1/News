@@ -10,21 +10,9 @@ import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 import ViewsCountFormatted from "@/utils/viewsCountFormat";
 import DateFormat from "@/utils/dateFormat";
+import { Article } from "@/types/article";
 
-interface ArticleItem {
-  id: string;
-  title: string;
-  summary: string | null;
-  coverImage: string | null;
-  viewsCount: number;
-  createdAt: Date;
-  isBreaking: boolean;
-  category?: {
-    name: string;
-  } | null;
-}
-
-export default function HeroNewsSlider({ articles }: { articles: ArticleItem[] }) {
+export default function HeroNewsSlider({ articles }: { articles: Article[] }) {
   if (!articles || articles.length === 0) return null;
 
   const featuredArticles = articles.slice(0, 5);

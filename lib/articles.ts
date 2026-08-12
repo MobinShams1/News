@@ -37,7 +37,7 @@ export async function createArticle(formData: FormData) {
     return { error: "نشست شما منقضی شده است. لطفاً دوباره لاگین کنید." };
   }
 
-  const authorId = currentAdmin.userId;
+  const authorId = currentAdmin.id;
 
   if (!authorId) {
     return { error: "شما برای ثبت خبر باید وارد حساب کاربری خود شوید." };
@@ -155,7 +155,6 @@ export async function updateArticle(articleId: string, formData: FormData) {
         title,
         summary: summary ? summary.trim() : content.slice(0, 100),
         content,
-        // 🔹 رفع خطای خط 88: تبدیل null به undefined
         coverImage: coverImage ?? undefined,
         isBreaking,
         category: {
@@ -178,9 +177,20 @@ export async function getNewsFeedData(categorySlug?: string) {
     prisma.article.findMany({
       where: categorySlug ? { category: { slug: categorySlug } } : {},
       orderBy: { createdAt: "desc" },
-      include: {
+      select: {
+        id: true,
+        title: true,
+        summary: true,
+        coverImage: true,
+        isBreaking: true,
+        viewsCount: true,
+        createdAt: true,
         category: {
-          select: { name: true, slug: true },
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
         },
       },
     }),
@@ -202,6 +212,25 @@ export async function getArticleSummaryById(id: string) {
       coverImage: true,
     },
   });
+}
+
+export async function getArticle(id: string) {
+  const article = await prisma.article.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      title: true,
+      summary: true,
+      content: true,
+      coverImage: true,
+      isBreaking: true,
+      viewsCount: true,
+      createdAt: true,
+      categoryId: true,
+    },
+  });
+
+  return article;
 }
 
 export async function getArticleAndIncrementViews(id: string) {
@@ -240,4 +269,15 @@ export async function getRelatedArticles(
       createdAt: true,
     },
   });
+}
+
+export default async function getArticles() {
+  const articles = await prisma.article.findMany({
+    orderBy: { createdAt: "desc" },
+    include: {
+      category: true,
+    },
+  });
+
+  return articles;
 }

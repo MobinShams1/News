@@ -1,6 +1,6 @@
 interface ViewsCountForm {
-  viewsCount: number;
-  children?: any;
+  viewsCount?: number;
+  children?: React.ReactNode;
 }
 
 export default function ViewsCountFormatted({

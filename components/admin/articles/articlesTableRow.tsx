@@ -3,18 +3,9 @@ import DeleteArticleBtn from "@/components/admin/articles/deleteArticleBtn";
 import Image from "next/image";
 import DateFormat from "@/utils/dateFormat";
 import ViewsCountFormatted from "@/utils/viewsCountFormat";
-interface ArticleItem {
-  id: string;
-  title: string;
-  coverImage: string | null;
-  viewsCount: number;
-  createdAt: Date;
-  category?: {
-    name: string;
-  } | null;
-}
+import { Article } from "@/types/article";
 
-export default function ArticleTableRow({ article }: { article: ArticleItem }) {
+export default function ArticleTableRow({ article }: { article: Article }) {
   return (
     <tr className="hover:bg-slate-800/40 transition-colors">
       <td className="p-4">

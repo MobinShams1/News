@@ -1,13 +1,10 @@
 "use client";
 
 import React from "react";
+import { UserItem } from "@/types/user";
 
 interface AdminHeaderProps {
-  user: {
-    name?: string | null;
-    phone: string;
-    role: string;
-  } | null;
+  user: UserItem | null;
   onToggleMobileSidebar: () => void;
 }
 
