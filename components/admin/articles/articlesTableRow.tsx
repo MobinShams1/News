@@ -1,7 +1,8 @@
 import Link from "next/link";
 import DeleteArticleBtn from "@/components/admin/articles/deleteArticleBtn";
 import Image from "next/image";
-
+import DateFormat from "@/utils/dateFormat";
+import ViewsCountFormatted from "@/utils/viewsCountFormat";
 interface ArticleItem {
   id: string;
   title: string;
@@ -42,10 +43,10 @@ export default function ArticleTableRow({ article }: { article: ArticleItem }) {
         </span>
       </td>
       <td className="p-4 dir-ltr text-right">
-        {article.viewsCount.toLocaleString("fa-IR")}
+        <ViewsCountFormatted viewsCount={article.viewsCount}/>
       </td>
       <td className="p-4 text-xs text-slate-400">
-        {new Date(article.createdAt).toLocaleDateString("fa-IR")}
+        <DateFormat date={article.createdAt}/>
       </td>
       <td className="p-4">
         <div className="flex items-center justify-center gap-2">

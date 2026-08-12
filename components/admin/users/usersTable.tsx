@@ -1,3 +1,4 @@
+import DateFormat from "@/utils/dateFormat";
 import DeleteUserBtn from "./deleteUserBtn";
 
 interface UserItem {
@@ -49,7 +50,7 @@ export default function UsersTable({ users }: { users: UserItem[] }) {
                     </span>
                   </td>
                   <td className="p-4 text-xs text-slate-400">
-                    {new Date(user.createdAt).toLocaleDateString("fa-IR")}
+                    <DateFormat date={user.createdAt}/>
                   </td>
                   <td className="p-4 text-center">
                     <DeleteUserBtn

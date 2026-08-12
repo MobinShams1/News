@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- پس‌زمینه دارک همخوان با تم Slate-950 -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#020617"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+
+    <!-- رنگ برند اصلی - Teal -->
+    <linearGradient id="teal-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2dd4bf"/>
+      <stop offset="100%" stop-color="#0d9488"/>
+    </linearGradient>
+
+    <!-- رنگ اکشن/خبر فوری - Red/Rose -->
+    <linearGradient id="breaking-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f43f5e"/>
+      <stop offset="100%" stop-color="#e11d48"/>
+    </linearGradient>
+  </defs>
+
+  <!-- پس‌زمینه اصلی با گوشه‌های گرد -->
+  <rect width="512" height="512" rx="120" fill="url(#bg-grad)"/>
+
+  <!-- صفحه اصلی خبر / روزنامه -->
+  <g transform="translate(100, 90)">
+    <!-- کارت پایه خبری -->
+    <rect x="0" y="0" width="312" height="332" rx="28" fill="#1e293b" stroke="url(#teal-grad)" stroke-width="12"/>
+
+    <!-- خط تیتر اول (برجسته) -->
+    <rect x="40" y="44" width="160" height="24" rx="12" fill="url(#teal-grad)"/>
+
+    <!-- علامت نشانگر خبر فوری (نقطه قرمز چشمک‌زن) -->
+    <circle cx="244" cy="56" r="16" fill="url(#breaking-grad)"/>
+
+    <!-- خطوط محتوای خبر -->
+    <rect x="40" y="100" width="232" height="14" rx="7" fill="#64748b"/>
+    <rect x="40" y="132" width="232" height="14" rx="7" fill="#475569"/>
+    <rect x="40" y="164" width="170" height="14" rx="7" fill="#475569"/>
+
+    <!-- بلاک تصویر خبر/رسانه -->
+    <rect x="40" y="208" width="232" height="80" rx="16" fill="#0f172a"/>
+    
+    <!-- نماد موشوار/فلش انتشار در گوشه تصویر -->
+    <path d="M72 248 L104 224 L104 272 Z" fill="url(#teal-grad)"/>
+    <rect x="116" y="240" width="120" height="12" rx="6" fill="#334155"/>
+    <rect x="116" y="260" width="80" height="12" rx="6" fill="#1e293b"/>
+  </g>
+</svg>

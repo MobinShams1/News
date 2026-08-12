@@ -1,3 +1,5 @@
+import DateFormat from "@/utils/dateFormat";
+import ViewsCountFormatted from "@/utils/viewsCountFormat";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -15,7 +17,11 @@ interface ArticleData {
   } | null;
 }
 
-export default function NewsDetailHeader({ article }: { article: ArticleData }) {
+export default function NewsDetailHeader({
+  article,
+}: {
+  article: ArticleData;
+}) {
   return (
     <header className="space-y-6 dir-rtl">
       <div className="flex items-center gap-2 text-xs text-slate-400">
@@ -47,7 +53,7 @@ export default function NewsDetailHeader({ article }: { article: ArticleData }) 
 
       <div className="flex flex-wrap items-center justify-between gap-4 py-3 border-y border-slate-800 text-xs text-slate-400">
         <div className="flex items-center gap-4">
-          <span>📅 {new Date(article.createdAt).toLocaleDateString("fa-IR")}</span>
+          <DateFormat date={article.createdAt}>📅</DateFormat>
           {article.isBreaking && (
             <span className="bg-red-500/20 text-red-400 font-bold px-2.5 py-0.5 rounded-md border border-red-500/30">
               خبر فوری 🚨
@@ -55,8 +61,9 @@ export default function NewsDetailHeader({ article }: { article: ArticleData }) 
           )}
         </div>
         <div className="flex items-center gap-1 dir-ltr text-slate-400 font-mono">
-          <span>بازدید</span>
-          <span>{article.viewsCount.toLocaleString("fa-IR")}</span>
+          <ViewsCountFormatted viewsCount={article.viewsCount}>
+            <span>بازدید</span>
+          </ViewsCountFormatted>
         </div>
       </div>
 

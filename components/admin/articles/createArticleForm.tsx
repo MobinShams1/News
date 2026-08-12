@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createArticle } from "@/lib/articles";
 import { toast } from "sonner";
@@ -10,26 +10,10 @@ interface Category {
   name: string;
 }
 
-export default function CreateArticleForm() {
+export default function CreateArticleForm({categories} : {categories : Category[]}) {
   const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState<Category[]>([]);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const router = useRouter();
-
-  useEffect(() => {
-    async function fetchCategories() {
-      try {
-        const res = await fetch("/api/categories");
-        if (res.ok) {
-          const data = await res.json();
-          setCategories(data);
-        }
-      } catch {
-        console.error("Error loading categories");
-      }
-    }
-    fetchCategories();
-  }, []);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -112,7 +96,9 @@ export default function CreateArticleForm() {
       {/* بخش پیش‌نمایش تصویر */}
       {imagePreview && (
         <div className="space-y-2">
-          <span className="text-xs text-slate-400">پیش‌نمایش تصویر انتخابی:</span>
+          <span className="text-xs text-slate-400">
+            پیش‌نمایش تصویر انتخابی:
+          </span>
           <div className="relative w-full max-w-xs h-40 rounded-xl overflow-hidden border border-slate-700 bg-slate-950">
             <img
               src={imagePreview}

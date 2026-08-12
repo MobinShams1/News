@@ -8,6 +8,8 @@ import { Autoplay, Pagination, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
+import ViewsCountFormatted from "@/utils/viewsCountFormat";
+import DateFormat from "@/utils/dateFormat";
 
 interface ArticleItem {
   id: string;
@@ -96,9 +98,11 @@ export default function HeroNewsSlider({ articles }: { articles: ArticleItem[] }
               )}
 
               <div className="flex items-center gap-4 text-xs text-slate-400 pt-2 border-t border-slate-800/80 w-fit">
-                <span>📅 {new Date(article.createdAt).toLocaleDateString("fa-IR")}</span>
+                <DateFormat date={article.createdAt}>📅</DateFormat>
                 <span>•</span>
-                <span className="dir-ltr">بازدید {article.viewsCount.toLocaleString("fa-IR")}</span>
+                <span className="dir-ltr">
+                  <ViewsCountFormatted viewsCount={article.viewsCount}><span>بازدید</span></ViewsCountFormatted>
+                </span>
               </div>
             </div>
           </SwiperSlide>

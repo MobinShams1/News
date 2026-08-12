@@ -4,8 +4,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { loginAdmin } from "@/lib/auth";
+import DateFormat from "@/utils/dateFormat";
 
 export default function LoginForm() {
+  const date = new Date();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -86,6 +88,7 @@ export default function LoginForm() {
           >
             {loading ? "در حال ورود..." : "ورود به حساب"}
           </button>
+          <DateFormat date={date}>📅</DateFormat>
         </form>
       </div>
     </div>

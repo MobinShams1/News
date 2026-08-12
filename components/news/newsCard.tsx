@@ -1,5 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
+import DateFormat from "@/utils/dateFormat";
+import ViewsCountFormatted from "@/utils/viewsCountFormat";
 
 interface NewsCardProps {
   article: {
@@ -66,10 +68,11 @@ export default function NewsCard({ article }: NewsCardProps) {
       </div>
 
       <div className="p-5 pt-0 border-t border-slate-800/50 mt-4 flex items-center justify-between text-[11px] text-slate-500">
-        <span>{new Date(article.createdAt).toLocaleDateString("fa-IR")}</span>
+        <DateFormat date={article.createdAt} />
         <div className="flex items-center gap-1 dir-ltr">
-          <span>بازدید</span>
-          <span>{article.viewsCount.toLocaleString("fa-IR")}</span>
+          <ViewsCountFormatted viewsCount={article.viewsCount}>
+            <span>بازدید</span>
+          </ViewsCountFormatted>
         </div>
       </div>
     </article>

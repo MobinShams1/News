@@ -10,7 +10,6 @@ export async function GET(
   
   const filePath = path.join(process.cwd(), "public", "uploads", filename);
 
-  // بررسی وجود فایل
   if (!fs.existsSync(filePath)) {
     console.error("File not found at path:", filePath);
     return new NextResponse("File not found", { status: 404 });
