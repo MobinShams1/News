@@ -67,6 +67,7 @@ export default function NewsDetailHeader({ article }: { article: ArticleData }) 
             alt={article.title}
             fill
             priority
+            unoptimized
             sizes="(max-width: 1200px) 100vw, 1200px"
             className="object-cover"
           />

@@ -23,6 +23,7 @@ export default function ArticleTableRow({ article }: { article: ArticleItem }) {
               src={article.coverImage}
               alt={article.title || "تصویر خبر"}
               fill
+              unoptimized
               sizes="48px"
               className="object-cover"
               priority={false}

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import EditArticleHeader from "@/components/admin/articles/editArticleHeader";
 import EditArticleForm from "@/components/admin/articles/editArticlesForm";
 import { Metadata } from "next";
+export const dynamic = "force-dynamic";
 interface EditArticlePageProps {
   params: Promise<{
     id: string;

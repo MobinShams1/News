@@ -34,6 +34,7 @@ export default function RelatedArticles({ articles }: { articles: ArticleItem[] 
                     alt={item.title}
                     fill
                     sizes="300px"
+                    unoptimized
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 ) : (

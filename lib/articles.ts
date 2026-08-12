@@ -3,7 +3,6 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { writeFile, mkdir } from "fs/promises";
-import { cookies } from "next/headers";
 import path from "path";
 import { getAuthAdmin } from "./auth";
 
@@ -49,7 +48,7 @@ export async function createArticle(formData: FormData) {
   const summary = formData.get("summary") as string;
   const content = formData.get("content") as string;
   const isBreaking = formData.get("isBreaking") === "true";
-  const imageFile = formData.get("imageFile") as File | null;
+  const imageFile = formData.get("imageFile") as File;
 
   if (!title || !categoryId || !content) {
     return { error: "لطفاً تمامی فیلدهای ضروری را پر کنید." };
@@ -71,7 +70,7 @@ export async function createArticle(formData: FormData) {
       const filePath = path.join(uploadDir, fileName);
       await writeFile(filePath, buffer);
 
-      coverImage = `/uploads/${fileName}`;
+      coverImage = `/api/uploads/${fileName}`;
     } catch (error) {
       console.error("Error saving image:", error);
       return { error: "خطا در ذخیره‌سازی تصویر." };
@@ -85,7 +84,7 @@ export async function createArticle(formData: FormData) {
         slug,
         summary: summary ? summary.trim() : content.slice(0, 100),
         content,
-        coverImage,
+        coverImage: coverImage ?? "",
         status: "PUBLISHED",
         isBreaking,
         author: {
@@ -127,7 +126,7 @@ export async function updateArticle(articleId: string, formData: FormData) {
     return { error: "خبر مورد نظر یافت نشد." };
   }
 
-  let coverImage = currentArticle.coverImage;
+  let coverImage: string | null = currentArticle.coverImage;
 
   if (imageFile && imageFile.size > 0 && imageFile.name !== "undefined") {
     try {
@@ -156,7 +155,8 @@ export async function updateArticle(articleId: string, formData: FormData) {
         title,
         summary: summary ? summary.trim() : content.slice(0, 100),
         content,
-        coverImage,
+        // 🔹 رفع خطای خط 88: تبدیل null به undefined
+        coverImage: coverImage ?? undefined,
         isBreaking,
         category: {
           connect: { id: categoryId },

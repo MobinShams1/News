@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import NewsDetailHeader from "@/components/news/newsDetailHeader";
 import NewsDetailContent from "@/components/news/newsDetailContent";
 import RelatedArticles from "@/components/news/relatedArticles";
-
+export const dynamic = "force-dynamic";
 interface PageProps {
   params: Promise<{ id: string }>;
 }

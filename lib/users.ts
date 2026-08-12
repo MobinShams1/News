@@ -63,10 +63,10 @@ export async function createAdmin(formData: FormData) {
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-
+    const fixedName = name.trim();
     await prisma.users.create({
       data: {
-        name: name ? name.trim() : null,
+        name: fixedName,
         phone: phone.trim(),
         password: hashedPassword,
         role: "ADMIN",

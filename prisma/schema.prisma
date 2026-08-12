@@ -1,5 +1,5 @@
 datasource db {
-  provider = "sqlserver"
+  provider = "postgresql"
 }
 
 generator client {
@@ -30,8 +30,8 @@ model Article {
   title       String
   slug        String   @unique
   summary     String
-  content     String   @db.NText
-  coverImage  String
+  content     String   @db.Text
+  coverImage  String?
   status      String   @default("PUBLISHED") 
   viewsCount  Int      @default(0)
   isBreaking  Boolean  @default(false)
