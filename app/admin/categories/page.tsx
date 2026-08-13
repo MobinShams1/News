@@ -3,8 +3,8 @@ import CategoriesHeader from "@/components/admin/categories/categoriesHeader";
 import CreateCategoryForm from "@/components/admin/categories/createCategoryForm";
 import CategoriesTable from "@/components/admin/categories/categoriesTable";
 import type { Metadata } from "next";
+import { CategoryWithCount } from "@/types/category";
 export const dynamic = "force-dynamic";
-
 
 export const metadata: Metadata = {
   title: "مدیریت دسته‌بندی‌ها",
@@ -14,8 +14,9 @@ export default async function CategoriesPage() {
   const categories = await getCategories();
 
   const totalCount = categories.length;
-  const emptyCount = categories.filter((c) => c._count.articles === 0).length;
-
+  const emptyCount = categories.filter(
+    (c: CategoryWithCount) => (c._count?.articles ?? 0) === 0,
+  ).length;
   return (
     <div className="space-y-6 dir-rtl max-w-6xl mx-auto">
       <CategoriesHeader totalCount={totalCount} emptyCount={emptyCount} />

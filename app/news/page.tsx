@@ -3,6 +3,7 @@ import NewsHeader from "@/components/news/newsHeader";
 import NewsGrid from "@/components/news/newsGrid";
 import HeroNewsSlider from "@/components/news/heroNewsSlider";
 import { getNewsFeedData } from "@/lib/articles";
+import { Category } from "@/types/category";
 
 export async function generateMetadata({
   searchParams,
@@ -10,7 +11,7 @@ export async function generateMetadata({
   const { category } = await searchParams;
   const { categories } = await getNewsFeedData(category);
 
-  const currentCategory = categories.find((c) => c.slug === category);
+  const currentCategory = categories.find((c: Category) => c.slug === category);
 
   const title = currentCategory
     ? `اخبار ${currentCategory.name} | آخرین گزارش‌ها و اخبار روز`
