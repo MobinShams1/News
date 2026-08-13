@@ -4,11 +4,49 @@ import NewsGrid from "@/components/news/newsGrid";
 import HeroNewsSlider from "@/components/news/heroNewsSlider";
 import { getNewsFeedData } from "@/lib/articles";
 
-export const metadata: Metadata = {
-  title: "آخرین اخبار و مقالات | خبرگزاری",
-  description: "جدیدترین اخبار روز، گزارش‌ها و تحلیل‌های خبری",
-};
+export async function generateMetadata({
+  searchParams,
+}: NewsPageProps): Promise<Metadata> {
+  const { category } = await searchParams;
+  const { categories } = await getNewsFeedData(category);
 
+  const currentCategory = categories.find((c) => c.slug === category);
+
+  const title = currentCategory
+    ? `اخبار ${currentCategory.name} | آخرین گزارش‌ها و اخبار روز`
+    : "آخرین اخبار و مقالات | خبرگزاری";
+
+  const description = currentCategory
+    ? `جدیدترین اخبار و گزارش‌های تحلیلی در حوزه ${currentCategory.name}. بروزترین اخبار را در خبرگزاری دنبال کنید.`
+    : "جدیدترین اخبار روز، گزارش‌ها و تحلیل‌های خبری ایران و جهان";
+
+  const pageUrl = category ? `/news?category=${category}` : "/news";
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: pageUrl, 
+    },
+    openGraph: {
+      title,
+      description,
+      url: pageUrl,
+      type: "website",
+      locale: "fa_IR",
+      siteName: "خبرگزاری",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+  };
+}
 export const revalidate = 60;
 
 interface NewsPageProps {

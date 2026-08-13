@@ -210,6 +210,7 @@ export async function getArticleSummaryById(id: string) {
       title: true,
       summary: true,
       coverImage: true,
+      createdAt: true,
     },
   });
 }
