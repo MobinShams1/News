@@ -61,19 +61,12 @@ export async function createArticle(formData: FormData) {
     try {
       const bytes = await imageFile.arrayBuffer();
       const buffer = Buffer.from(bytes);
+      const mimeType = imageFile.type || "image/jpeg";
 
-      const fileExt = path.extname(imageFile.name).toLowerCase() || ".jpg";
-      const fileName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${fileExt}`;
-      const uploadDir = path.join(process.cwd(), "public/uploads");
-
-      await mkdir(uploadDir, { recursive: true });
-      const filePath = path.join(uploadDir, fileName);
-      await writeFile(filePath, buffer);
-
-      coverImage = `/api/uploads/${fileName}`;
+      coverImage = `data:${mimeType};base64,${buffer.toString("base64")}`;
     } catch (error) {
-      console.error("Error saving image:", error);
-      return { error: "خطا در ذخیره‌سازی تصویر." };
+      console.error("Error encoding image:", error);
+      return { error: "خطا در پردازش تصویر." };
     }
   }
 
@@ -132,19 +125,12 @@ export async function updateArticle(articleId: string, formData: FormData) {
     try {
       const bytes = await imageFile.arrayBuffer();
       const buffer = Buffer.from(bytes);
+      const mimeType = imageFile.type || "image/jpeg";
 
-      const fileExt = path.extname(imageFile.name).toLowerCase() || ".jpg";
-      const fileName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${fileExt}`;
-      const uploadDir = path.join(process.cwd(), "public/uploads");
-
-      await mkdir(uploadDir, { recursive: true });
-      const filePath = path.join(uploadDir, fileName);
-      await writeFile(filePath, buffer);
-
-      coverImage = `/uploads/${fileName}`;
+      coverImage = `data:${mimeType};base64,${buffer.toString("base64")}`;
     } catch (error) {
-      console.error("Error saving image:", error);
-      return { error: "خطا در ذخیره‌سازی تصویر جدید." };
+      console.error("Error encoding image:", error);
+      return { error: "خطا در پردازش تصویر." };
     }
   }
 
